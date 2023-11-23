@@ -57,6 +57,74 @@ const login = async (req, res) => {
     }
 }
 
+
+
+// Admin Login
+const adminLogin = async (req, res) => {
+    try {
+        const { username, password } = req.body;
+
+        // Check if the username exists in the database
+        const userResult = await pool.query(queries.findUserByUsername, [username]);
+
+        // If no user with the provided username exists, return an error
+        if (userResult.rows.length === 0) {
+            return res.status(401).json({ message: 'Authentication failed. User not found.' });
+        }
+
+        const foundUser = userResult.rows[0];
+
+        // Compare the provided password with the hashed password in the database
+        const storedPassword = foundUser.password;
+        const passwordMatch = await bcrypt.compare(password, storedPassword);
+
+        // If the passwords match and the user is an admin, authentication is successful
+        if (passwordMatch && foundUser.role === 'admin') {
+            let token;
+            try {
+                token = jwt.sign(
+                    {
+                        userId: foundUser.user_id,
+                        username: foundUser.username,
+                        email: foundUser.email,
+                        role: foundUser.role,
+                        createdAt: foundUser.created_at
+                    },
+                    "secretkeyappearshere",
+                    { expiresIn: '1h' }
+                );
+            } catch (error) {
+                console.error('error', error);
+                return res.status(500).json({ message: 'An error occurred during login' });
+            }
+
+            return res.status(200).json({
+                message: "Admin Login Successful",
+                success: true,
+                data: {
+                    userData: {
+                        userId: foundUser.user_id,
+                        username: foundUser.username,
+                        email: foundUser.email,
+                        role: foundUser.role,
+                    },
+                    token: token,
+                },
+            });
+        } else {
+            // If passwords do not match or the user is not an admin, return an error
+            return res.status(401).json({ message: 'Authentication failed. Incorrect password or not an admin.' });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'An error occurred during admin login' });
+    }
+};
+
+
+
+
+
 // Register User
 const register = async (req, res) => {
     try {
@@ -72,7 +140,7 @@ const logout = async (req, res) => {
     try {
         res.clearCookie('token'); // Clear the authentication token cookie
 
-        res.status(200).json({success: true, message: 'Logout successful' });
+        res.status(200).json({ success: true, message: 'Logout successful' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'An error occurred during logout' });
@@ -99,4 +167,4 @@ const resetPassword = async (req, res) => {
     }
 }
 
-module.exports = { login, register, logout, forgotPassword, resetPassword };
+module.exports = { login, register, logout, forgotPassword, resetPassword, adminLogin };

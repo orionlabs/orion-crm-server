@@ -10,6 +10,9 @@ const router = Router();
 // Login
 router.post('/', controllers.login);
 
+
+router.post('/admin', controllers.adminLogin);
+
 // Register
 router.post('/register', userControllers.addUser);
 
