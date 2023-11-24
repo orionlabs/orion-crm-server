@@ -56,6 +56,7 @@ const editUser = async (req, res) => {
 
         // Check if the user with the given ID exists
         const checkIfExists = await pool.query(userQueries.checkIfUserExistsById, [id]);
+        console.log('checkIfExists', checkIfExists)
         if (checkIfExists.rows.length === 0) {
             res.status(404).send('User Not Found');
             return;
