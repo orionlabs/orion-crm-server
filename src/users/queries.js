@@ -13,6 +13,9 @@ const addUser = 'INSERT INTO users (username, email, role, password) VALUES ($1,
 // Check if a username already exists
 const checkIfUsernameExists = 'SELECT * FROM users WHERE username = $1';
 
+// Check if a userId exists
+const checkIfUserExistsById = 'SELECT * FROM users WHERE user_id = $1';
+
 // Delete a user by their ID
 const deleteUser = 'DELETE FROM users WHERE user_id = $1';
 
@@ -37,5 +40,6 @@ module.exports = {
     checkIfUsernameExists,
     updateUserWithoutPassword,
     updateLoginLocation,
-    updateLogoutLocation
+    updateLogoutLocation,
+    checkIfUserExistsById
 };
