@@ -53,7 +53,7 @@ const editUser = async (req, res) => {
     try {
         const { id } = req.params; // Assuming you pass the user's ID as a parameter
         const { username, email, role, password } = req.body;
-
+        console.log(req.body, id)
         // Check if the user with the given ID exists
         const checkIfExists = await pool.query(userQueries.checkIfUserExistsById, [id]);
         console.log('checkIfExists', checkIfExists)
