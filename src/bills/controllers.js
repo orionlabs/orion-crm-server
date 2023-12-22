@@ -42,15 +42,16 @@ const addBill = async (req, res) => {
 
     try {
         const addBillResult = await pool.query(queries.addBill, [
-            invoice_no,
-            invoice_date,
-            product,
-            stock,
-            amount,
-            payment_status,
-            payment_date,
-            client_id,
-        ]);
+    invoice_no,
+    invoice_date,
+    product,
+    stock,
+    amount,
+    payment_status,
+    payment_date,
+    client_id,
+]);
+
         res.status(201).send("Bill Added Successfully");
         console.log(addBillResult.rows);
     } catch (error) {
