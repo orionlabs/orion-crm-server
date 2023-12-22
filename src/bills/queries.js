@@ -13,8 +13,9 @@ const addBill = `
         amount,
         payment_status,
         payment_date,
-        client_id
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8);
+        client_id,
+        paid_amount,
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);
 `;
 
 const deleteBill = 'DELETE FROM BILLS WHERE invoice_id = $1';
