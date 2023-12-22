@@ -14,7 +14,7 @@ const addBill = `
         payment_status,
         payment_date,
         client_id,
-        paid_amount,
+        paid_amount
     ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);
 `;
 
