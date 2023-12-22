@@ -37,7 +37,7 @@ const addBill = async (req, res) => {
         payment_status,
         payment_date,
         client_id,
-        paid_amount,
+        paid_amount
     } = req.body;
 
     try {
@@ -50,6 +50,7 @@ const addBill = async (req, res) => {
     payment_status,
     payment_date,
     client_id,
+    paid_amount        
 ]);
 
         res.status(201).send("Bill Added Successfully");
